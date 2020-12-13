@@ -1,1 +1,3 @@
-<p>value works!</p>
+<p *ngFor="let value of values">{{value.id}} : {{value.name}}</p>
+<!-- Structuran directives change the main object model
+ Each time it repeats it copy the <p></p> to the DOM-->
