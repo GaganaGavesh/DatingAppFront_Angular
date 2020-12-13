@@ -1,3 +1,4 @@
+import { ThrowStmt } from '@angular/compiler';
 import { Component, OnInit } from '@angular/core';
 import { Http } from '@angular/http';
 
@@ -8,7 +9,7 @@ import { Http } from '@angular/http';
 })
 export class ValueComponent implements OnInit {
 
-  value: any;
+  values: any;
 
   constructor(private http: Http) { }
 
@@ -19,7 +20,10 @@ export class ValueComponent implements OnInit {
   getValues(){
     this.http.get('http://localhost:50100/api/values').subscribe(
       res => {
-        console.log(res);
+        this.values = res.json();//Attempts to return body as parsed JSON object, or raises an exception
+        console.log(this.values);
+      }, error=>{
+        console.log(error);
       });
   }
 
