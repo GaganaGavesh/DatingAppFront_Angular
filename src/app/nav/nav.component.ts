@@ -16,7 +16,7 @@ export class NavComponent implements OnInit {
 
   ngOnInit(){
     //meka wenne eka parai
-    console.log(this.model);
+    //console.log(this.model);
 
   }
 
@@ -24,11 +24,28 @@ export class NavComponent implements OnInit {
     this.authService.login(this.model).subscribe(data=>{
       console.log("Logged in successfully");
     }, error=>{
-      console.log("Failed to login");
+      //console.log("Failed to login");
+      console.log(error);
     }
     );
     console.log(this.model);
     this.signupForm.reset();
+  }
+
+  loggedIn(){
+    const token = localStorage.getItem('token');//Returns the current value associated with the given key, 
+    //or null if the given key does not exist in the list associated with the object.
+    if(token){
+      return true;
+    }else{
+      return false;
+    }
+  }
+
+  logOut(){
+    this.authService.userToken = null;
+    localStorage.removeItem('token');
+    console.log("User logged out");
   }
 
 }
