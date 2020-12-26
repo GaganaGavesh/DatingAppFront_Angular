@@ -19,18 +19,20 @@ export class AuthService {
   login(model : any){
     // const headers = new Headers({'Content-type': 'application/json'});
     // const options = new RequestOptions({headers : headers});
-
+    
     return this.http.post(this.baseUrl + 'login', model, this.requestOptions()).map((response : Response)=>{
       const user = response.json();//user variable ekata response eken ena data tika json type eken dagannawa
       if(user){
         localStorage.setItem('token', user.tokenString);
         this.userToken = user.tokenString;//component variable ekakatat dagannawa token eka
       }
-    }).catch(this.handleError);
+    }).catch(error => this.handleError(error));//subscribe karala tyna thana error ekata yanne methanin catch karaganna error eka
+    //.catch(this.handleError);//mehema witharak dannath pluwaan, hariyatama danne ne mokoda kiyalla
   }
 
   register(model : any){
-    return this.http.post(this.baseUrl + 'register', model, this.requestOptions());
+    return this.http.post(this.baseUrl + 'register', model, this.requestOptions()).catch(error => this.handleError(error));
+    //Catches errors on the observable to be handled by returning a new observable or throwing an error.
   }
 
   private requestOptions(){
@@ -45,14 +47,17 @@ export class AuthService {
   private handleError(error: any){
     //meka api ganne api ekee exception handle karanna dapu method eken return wena
     //response eke header eken.."Application-Error" meka thama header eke message eka tyna thana key eka
-    const applicationError = error.headers.get("Application-Error");
+
+    const applicationError = error.headers.get("Application-Error");//meken ganne exception wage ewa
     if(applicationError){
       return Observable.throw(applicationError);//meken ewanne epe error message eka witharamai
     }
     //dan karanne model state errors tika ganna eka body eken.
     //"{"Password":["The Password field is required."],"Username":["The Username field is required."]}"
     //meke error description eka ganna nam key eken key eka loop karanna ona
-    const serverError = error.json();
+    
+    const serverError = error.json();//meken ganne model stete errors wage dewal
+    //me error kiyala allaganne body eke tyna error message tika mm hithanne
     let modelStateError = '';
     if(serverError){
       for(const key in serverError){
@@ -62,6 +67,8 @@ export class AuthService {
       }
     }
     return Observable.throw(modelStateError || 'serverError');
+    //Creates an Observable that emits no items to the Observer and immediately emits an error notification.
+    //Just emits 'error', and nothing else.
   }
 
 }
