@@ -1,6 +1,7 @@
 import { Component, Input, OnInit, Output, EventEmitter, ViewChild } from '@angular/core';
 import { AuthService } from '../_services/auth.service';
 import { NgForm } from '@angular/forms';
+import { AlertifyService } from '../_services/alertify.service';
 //import { EventEmitter } from 'events';
 
 @Component({
@@ -16,7 +17,7 @@ export class RegisterComponent implements OnInit {
   model : any = {};
   @ViewChild('registerForm') registerForm: NgForm; //to get the form details
 
-  constructor(private authService : AuthService) { }
+  constructor(private authService : AuthService, private alertify: AlertifyService) { }
 
   ngOnInit(): void {
   }
@@ -25,8 +26,10 @@ export class RegisterComponent implements OnInit {
     //register method ekata ape model eka yawanawa
     this.authService.register(this.model).subscribe((res)=>{
       console.log("Registration Successful");
+      this.alertify.success("Registration Successful");
     }, error=>{
-      console.log(error);
+      //console.log(error);
+      this.alertify.error(error);
     });
     this.registerForm.reset();
     //console.log(this.model);
@@ -34,7 +37,7 @@ export class RegisterComponent implements OnInit {
 
   cancel(){
     this.cancelRegister.emit(false);
-    console.log("Cancelled");
+    //console.log("Cancelled");
   }
 
 }

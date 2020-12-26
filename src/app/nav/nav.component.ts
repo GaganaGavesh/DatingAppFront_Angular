@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { AlertifyService } from '../_services/alertify.service';
 import { AuthService } from '../_services/auth.service';
 
 @Component({
@@ -12,7 +13,7 @@ export class NavComponent implements OnInit {
   model : any = {};//this is empty object
   @ViewChild('loginForm') signupForm: NgForm
 
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService, private alertify: AlertifyService) { }
 
   ngOnInit(){
     //meka wenne eka parai
@@ -22,10 +23,12 @@ export class NavComponent implements OnInit {
 
   login(){
     this.authService.login(this.model).subscribe(data=>{
-      console.log("Logged in successfully");
+      //console.log("Logged in successfully");
+      this.alertify.success("Logged in successfully");
     }, error=>{
       //console.log("Failed to login");
       console.log(error);
+      this.alertify.error(error);
     }
     );
     console.log(this.model);
@@ -45,7 +48,8 @@ export class NavComponent implements OnInit {
   logOut(){
     this.authService.userToken = null;
     localStorage.removeItem('token');
-    console.log("User logged out");
+    //console.log("User logged out");
+    this.alertify.message("User logged out");
   }
 
 }
