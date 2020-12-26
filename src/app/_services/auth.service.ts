@@ -1,3 +1,4 @@
+import { isNull } from '@angular/compiler/src/output/output_ast';
 import { Injectable } from '@angular/core';
 import { Http, RequestOptions, Headers, Response } from '@angular/http';
 import { map } from 'rxjs/operators';
@@ -55,9 +56,14 @@ export class AuthService {
     //dan karanne model state errors tika ganna eka body eken.
     //"{"Password":["The Password field is required."],"Username":["The Username field is required."]}"
     //meke error description eka ganna nam key eken key eka loop karanna ona
-    
+    // console.log(error);
+    // console.log("OK "+error.ok);
+    // if(error){
+    //   console.log("Not empty error");
+    // }
     const serverError = error.json();//meken ganne model stete errors wage dewal
     //me error kiyala allaganne body eke tyna error message tika mm hithanne
+ 
     let modelStateError = '';
     if(serverError){
       for(const key in serverError){
