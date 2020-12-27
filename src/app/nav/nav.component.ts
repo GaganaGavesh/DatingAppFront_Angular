@@ -36,13 +36,14 @@ export class NavComponent implements OnInit {
   }
 
   loggedIn(){
-    const token = localStorage.getItem('token');//Returns the current value associated with the given key, 
+    //const token = localStorage.getItem('token');//Returns the current value associated with the given key, 
     //or null if the given key does not exist in the list associated with the object.
-    if(token){
-      return true;
-    }else{
-      return false;
-    }
+    // if(token){
+    //   return true;
+    // }else{
+    //   return false;
+    // }
+    return this.authService.loggedIn();
   }
 
   logOut(){
