@@ -12,9 +12,11 @@ export class NavComponent implements OnInit {
 
   model : any = {};//this is empty object
   @ViewChild('loginForm') signupForm: NgForm
+  userName: any;
 
   constructor(private authService: AuthService, private alertify: AlertifyService) { }
-
+  
+  
   ngOnInit(){
     //meka wenne eka parai
     //console.log(this.model);
@@ -24,6 +26,7 @@ export class NavComponent implements OnInit {
   login(){
     this.authService.login(this.model).subscribe(data=>{
       //console.log("Logged in successfully");
+      //this.userName = this.authService.decodedToken.unique_name;
       this.alertify.success("Logged in successfully");
     }, error=>{
       //console.log("Failed to login");
