@@ -1,6 +1,7 @@
 import { isNull } from '@angular/compiler/src/output/output_ast';
 import { Injectable } from '@angular/core';
 import { Http, RequestOptions, Headers, Response } from '@angular/http';
+import { tokenNotExpired } from 'angular2-jwt';
 import { map } from 'rxjs/operators';
 // import 'rxjs/add/operator/map';
 import 'rxjs/Rx';
@@ -24,7 +25,7 @@ export class AuthService {
     return this.http.post(this.baseUrl + 'login', model, this.requestOptions()).map((response : Response)=>{
       const user = response.json();//user variable ekata response eken ena data tika json type eken dagannawa
       if(user){
-        localStorage.setItem('token', user.tokenString);
+        localStorage.setItem('token', user.tokenString);//key value widiyata thama save wenne
         this.userToken = user.tokenString;//component variable ekakatat dagannawa token eka
       }
     }).catch(error => this.handleError(error));//subscribe karala tyna thana error ekata yanne methanin catch karaganna error eka
@@ -34,6 +35,11 @@ export class AuthService {
   register(model : any){
     return this.http.post(this.baseUrl + 'register', model, this.requestOptions()).catch(error => this.handleError(error));
     //Catches errors on the observable to be handled by returning a new observable or throwing an error.
+  }
+
+  loggedIn(){
+    return tokenNotExpired('token');//meken ape local storage eke token vlue ekata adala 
+    //key eka thama denna ona
   }
 
   private requestOptions(){
