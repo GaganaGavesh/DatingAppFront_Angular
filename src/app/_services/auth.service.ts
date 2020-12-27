@@ -1,7 +1,7 @@
 import { isNull } from '@angular/compiler/src/output/output_ast';
 import { Injectable } from '@angular/core';
 import { Http, RequestOptions, Headers, Response } from '@angular/http';
-import { tokenNotExpired } from 'angular2-jwt';
+import { JwtHelper, tokenNotExpired } from 'angular2-jwt';
 import { map } from 'rxjs/operators';
 // import 'rxjs/add/operator/map';
 import 'rxjs/Rx';
@@ -15,6 +15,12 @@ export class AuthService {
   baseUrl = 'http://localhost:50100/api/auth/';
   userToken : any;
 
+  //angular JWT library
+  decodedToken: any;
+  jwtHelper: JwtHelper = new JwtHelper();//JwtHelper kiyana class eke thama decodeToken method eka tynne
+  //e class eke instance ekak ona me method eka call karanna. e nisa me instance eka hadagaththa
+  //decodeToken method eken enne decoded token ekak typeeka "any"
+  //eka dagannawa decodedToken kiyana variable ekata
 
   constructor(private http: Http) { }
 
@@ -26,6 +32,8 @@ export class AuthService {
       const user = response.json();//user variable ekata response eken ena data tika json type eken dagannawa
       if(user){
         localStorage.setItem('token', user.tokenString);//key value widiyata thama save wenne
+        this.decodedToken = this.jwtHelper.decodeToken(user.tokenString);
+        console.log(this.decodedToken);
         this.userToken = user.tokenString;//component variable ekakatat dagannawa token eka
       }
     }).catch(error => this.handleError(error));//subscribe karala tyna thana error ekata yanne methanin catch karaganna error eka
