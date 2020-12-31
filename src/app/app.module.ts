@@ -3,6 +3,9 @@ import { NgModule } from '@angular/core';
 import { HttpModule } from '@angular/http';
 import { HttpClient } from '@angular/common/http';
 
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ValueComponent} from './value/value.component';
@@ -15,6 +18,7 @@ import { ListComponent } from './list/list.component';
 import { MessagesComponent } from './messages/messages.component';
 import { RouterModule } from '@angular/router';
 import { appRoutes } from './routes';
+import { AuthGuard } from './_guards/auth.guard';
 
 @NgModule({
   declarations: [
@@ -32,9 +36,10 @@ import { appRoutes } from './routes';
     AppRoutingModule,
     HttpModule,
     FormsModule,
-    RouterModule.forRoot(appRoutes)
+    RouterModule.forRoot(appRoutes),
+    BsDropdownModule.forRoot()
   ],
-  providers: [],
+  providers: [AuthGuard],//providedIn: 'root' dapuwa tyna nisa methana wadiya ne
   bootstrap: [AppComponent]
 })
 export class AppModule { }
