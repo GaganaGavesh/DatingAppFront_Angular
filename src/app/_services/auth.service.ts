@@ -14,7 +14,6 @@ export class AuthService {
 
   baseUrl = 'http://localhost:50100/api/auth/';
   userToken : any;
-
   //angular JWT library
   decodedToken: any;
   jwtHelper: JwtHelper = new JwtHelper();//JwtHelper kiyana class eke thama decodeToken method eka tynne
@@ -38,6 +37,8 @@ export class AuthService {
       }
     }).catch(error => this.handleError(error));//subscribe karala tyna thana error ekata yanne methanin catch karaganna error eka
     //.catch(this.handleError);//mehema witharak dannath pluwaan, hariyatama danne ne mokoda kiyalla
+    //error ekak awama eka catch karala e error eka handleErroe error ekata yawanawaa eken error eka thawa descriptive
+    //karala ewanawa
   }
 
   register(model : any){
