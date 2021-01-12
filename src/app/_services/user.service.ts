@@ -8,6 +8,7 @@ import 'rxjs/Rx';
 import 'rxjs/add/operator/map'
 import 'rxjs/add/operator/catch'
 import 'rxjs/add/observable/throw'
+import { ThrowStmt } from '@angular/compiler';
 
 
 @Injectable({
@@ -27,6 +28,12 @@ export class UserService {
   }
   //Aape api eken token ekak request karanawa neh users la set eka dena controller eka acces karanakota
   //e nisa me request eke api ape token eka yawanna ona
+
+  getUser(id : number) : Observable<User> {
+    return this.http.get(this.baseUrl + 'users/'+ id, this.jwt())
+           .map(response => <User>response.json())
+           .catch(error => this.handleError(error));
+  }
 
   private jwt(){
     let token = localStorage.getItem('token');
