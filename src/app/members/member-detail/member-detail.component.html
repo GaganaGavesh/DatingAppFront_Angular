@@ -43,7 +43,23 @@ property eka gawata thaa meka danna ona  -->
             </div>
         </div>
         <div class="col-sm-8">
-
+            <tabset>
+                <tab heading="About {{ user?.knownAs }}" id="tab1">
+                    <h4>Description</h4>
+                    <p>{{ user?.introduction}}</p>
+                    <h4>Loking For:</h4>
+                    <p>{{user?.lookingFor}}</p>
+                </tab>
+                <tab heading="Interest" id="tab2">
+                    <h4>Description</h4>
+                    <p>{{ user?.interests}}</p>
+                </tab>
+                <tab heading="Photos" id="tab3">
+                    <p>Photos of user</p>
+                </tab><tab heading="Messages" id="tab4">
+                    <p>Messages of user</p>
+                </tab>
+            </tabset>
         </div>
     </div>
 </div>
