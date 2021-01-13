@@ -6,8 +6,15 @@ import { RouterModule } from '@angular/router';
 
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { TabsModule } from 'ngx-bootstrap/tabs';
+import { NgxGalleryModule } from '@kolkov/ngx-gallery';
 
-import { AppRoutingModule } from './app-routing.module';
+import { AuthGuard } from './_guards/auth.guard';
+
+import { MemberDetailResolver } from './_resolvers/member-detail.resolver';
+import { MemberListResolver } from './_resolvers/member-list.resolver';
+
+import { appRoutes } from './routes';
+
 import { AppComponent } from './app.component';
 import { ValueComponent} from './value/value.component';
 import { NavComponent } from './nav/nav.component';
@@ -16,8 +23,6 @@ import { RegisterComponent } from './register/register.component';
 import { MemberListComponent } from './members/member-list/member-list.component';
 import { ListComponent } from './list/list.component';
 import { MessagesComponent } from './messages/messages.component';
-import { appRoutes } from './routes';
-import { AuthGuard } from './_guards/auth.guard';
 import { MemberCardComponent } from './members/member-card/member-card.component';
 import { MemberDetailComponent } from './members/member-detail/member-detail.component';
 
@@ -36,14 +41,14 @@ import { MemberDetailComponent } from './members/member-detail/member-detail.com
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule,
     HttpModule,
     FormsModule,
     RouterModule.forRoot(appRoutes),
     BsDropdownModule.forRoot(),
-    TabsModule.forRoot()  
+    TabsModule.forRoot(),
+    NgxGalleryModule
   ],
-  providers: [AuthGuard],//providedIn: 'root' dapuwa tyna nisa methana wadiya ne
+  providers: [AuthGuard, MemberDetailResolver, MemberListResolver],//providedIn: 'root' dapuwa tyna nisa methana wadiya ne
   bootstrap: [AppComponent]
 })
 export class AppModule { }
