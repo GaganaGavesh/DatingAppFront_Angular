@@ -12,6 +12,7 @@ import { AuthGuard } from './_guards/auth.guard';
 
 import { MemberDetailResolver } from './_resolvers/member-detail.resolver';
 import { MemberListResolver } from './_resolvers/member-list.resolver';
+import { MemberEditResolver } from './_resolvers/member-edit.resolver';
 
 import { appRoutes } from './routes';
 
@@ -25,6 +26,7 @@ import { ListComponent } from './list/list.component';
 import { MessagesComponent } from './messages/messages.component';
 import { MemberCardComponent } from './members/member-card/member-card.component';
 import { MemberDetailComponent } from './members/member-detail/member-detail.component';
+import { MemberEditComponent } from './members/member-edit/member-edit.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +39,8 @@ import { MemberDetailComponent } from './members/member-detail/member-detail.com
     ListComponent,
     MessagesComponent,
     MemberCardComponent,
-    MemberDetailComponent
+    MemberDetailComponent,
+    MemberEditComponent
   ],
   imports: [
     BrowserModule,
@@ -48,7 +51,11 @@ import { MemberDetailComponent } from './members/member-detail/member-detail.com
     TabsModule.forRoot(),
     NgxGalleryModule
   ],
-  providers: [AuthGuard, MemberDetailResolver, MemberListResolver],//providedIn: 'root' dapuwa tyna nisa methana wadiya ne
+  providers: [
+    AuthGuard, 
+    MemberDetailResolver, 
+    MemberListResolver,
+    MemberEditResolver],//providedIn: 'root' dapuwa tyna nisa methana wadiya ne
   bootstrap: [AppComponent]
 })
 export class AppModule { }
