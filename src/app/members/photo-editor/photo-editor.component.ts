@@ -4,6 +4,9 @@ import { FileUploader } from 'ng2-file-upload';
 import { environment } from 'src/environments/environment';
 import { AuthService } from 'src/app/_services/auth.service';
 import { throwError } from 'rxjs';
+import { UserService } from 'src/app/_services/user.service';
+import { AlertifyService } from 'src/app/_services/alertify.service';
+import * as _ from 'underscore'; //* is for specify everything, everything represents as _
 
 @Component({
   selector: 'app-photo-editor',
@@ -16,8 +19,12 @@ export class PhotoEditorComponent implements OnInit {
   hasBaseDropZoneOver = false;
   hasAnotherDropZoneOver = false;
   baseUrl = environment.apiUrl;
+  currentMain : Photo;
 
-  constructor(private authService : AuthService) { }
+  constructor(
+    private authService : AuthService, 
+    private userService : UserService,
+    private alertify : AlertifyService) { }
 
   ngOnInit(): void {
     this.initializeUploader();
@@ -51,5 +58,24 @@ export class PhotoEditorComponent implements OnInit {
         this.photos.push(photo);
       }
     };
+  }
+
+  setMainPhoto(photo: Photo){
+    this.userService.setMainPhoto(this.authService.decodedToken.nameid, photo.id).subscribe(()=> {
+      // let i = 0;
+      // for(i;i<this.photos.length;i++){
+      //   if(this.photos[i].isMain){
+      //     this.currentMain = this.photos[i];
+      //     this.currentMain.isMain = false;
+      //     photo.isMain = true;
+      //   }
+      // }
+      this.currentMain = _.findWhere<Photo[]>(this.photos, {isMain : true});
+      this.currentMain.isMain = false;
+      photo.isMain =true;
+    }, error => {
+      this.alertify.error(error);
+    }
+    );
   }
 }
