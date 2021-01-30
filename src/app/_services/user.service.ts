@@ -39,6 +39,13 @@ export class UserService {
     return this.http.put(this.baseUrl + 'users/' + id, user, this.jwt()).catch(this.handleError);
   }
 
+  setMainPhoto(userId: number, id: number){
+    return this.http.post(this.baseUrl + 'users/' + userId + '/photos/' + id + '/setMain', {}, this.jwt())
+           .catch(err => this.handleError(err));
+           //meka post method ekak unath api Body ekata monawath danne ne, url eke thama me dewal danne
+           //body ekee empty object ekak thama yawanne
+  }
+
   private jwt(){
     let token = localStorage.getItem('token');
 
