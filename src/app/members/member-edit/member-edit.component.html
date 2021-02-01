@@ -62,7 +62,7 @@ property eka gawata thaa meka danna ona  -->
                         </form>
                     </tab>
                     <tab heading="Edit Photos" id="tab2">
-                        <app-photo-editor [photos]="user.photos"></app-photo-editor>
+                        <app-photo-editor [photos]="user.photos" (getMemberPhotoChange)="updateMainPhoto($event)"></app-photo-editor>
                     </tab>
                 </tabset>
             </div>
