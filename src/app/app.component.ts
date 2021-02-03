@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { JwtHelper } from 'angular2-jwt';
+import { User } from './_models/User';
 import { AuthService } from './_services/auth.service';
 
 @Component({
@@ -21,8 +22,12 @@ export class AppComponent implements OnInit{
     //methendima check karala token ekak tyenam authservice eke variable ekata dagannawa
     //ethakota refresh waladi aniwa token name eka ganna than walata me name eka ganna pluwan aulak nathuwa
     const token = localStorage.getItem('token');
+    const user: User = JSON.parse(localStorage.getItem('user'));
     if(token){
       this.authService.decodedToken = this.jwtHelper.decodeToken(token);
+    }
+    if(user){
+      this.authService.currentUser = user;
     }
   }
 }
