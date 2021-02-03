@@ -16,7 +16,7 @@ export class NavComponent implements OnInit {
   userName: any;
 
   constructor(
-    private authService: AuthService, 
+    public authService: AuthService, 
     private alertify: AlertifyService,
     private router: Router) { }
   
@@ -28,17 +28,18 @@ export class NavComponent implements OnInit {
   }
 
   login(){
-    this.authService.login(this.model).subscribe(data=>{
+      this.authService.login(this.model).subscribe(data=>{
       //console.log("Logged in successfully");
       //this.userName = this.authService.decodedToken.unique_name;
       this.alertify.success("Logged in successfully");
     }, error=>{
       //console.log("Failed to login");
-      //console.log(error);
+      console.log(error);
       this.alertify.error("Failed to login");
     },()=>{
       this.router.navigate(['/members']);
     });
+    console.log("In NavBar");
     console.log(this.model);
     this.signupForm.reset();
   }
@@ -56,7 +57,9 @@ export class NavComponent implements OnInit {
 
   logOut(){
     this.authService.userToken = null;
+    this.authService.currentUser = null;
     localStorage.removeItem('token');
+    localStorage.removeItem('user');
     //console.log("User logged out");
     this.router.navigate(['/home']);
     this.alertify.message("User logged out");

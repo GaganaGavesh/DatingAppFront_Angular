@@ -36,6 +36,9 @@
         </form>
 
         <ul *ngIf="loggedIn()" class="nav navbar-nav navbar-right">
+          <li>
+            <img src="{{ authService.currentUser.photoUrl }}" alt="">
+          </li>
           <li><a (click)="logOut()" style="cursor: pointer;">Logout</a></li>
           <li><a [routerLink]="['/member/edit']">Edit Profile</a></li>
           <li class="dropdown">
