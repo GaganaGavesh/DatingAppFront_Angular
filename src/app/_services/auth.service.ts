@@ -6,6 +6,7 @@ import { map } from 'rxjs/operators';
 // import 'rxjs/add/operator/map';
 import 'rxjs/Rx';
 import { Observable } from 'rxjs/Rx';
+import { User } from '../_models/User';
 
 @Injectable({
   providedIn: 'root'//appmodule eke providers array ekata danna ona ne, mehema dala tyna nisa
@@ -20,6 +21,7 @@ export class AuthService {
   //e class eke instance ekak ona me method eka call karanna. e nisa me instance eka hadagaththa
   //decodeToken method eken enne decoded token ekak typeeka "any"
   //eka dagannawa decodedToken kiyana variable ekata
+  currentUser : User;
 
   constructor(private http: Http) { }
 
@@ -28,10 +30,16 @@ export class AuthService {
     // const options = new RequestOptions({headers : headers});
     
     return this.http.post(this.baseUrl + 'login', model, this.requestOptions()).map((response : Response)=>{
+      console.log("In service");
+      // console.log(response);
+      // console.log(response.json());//Attempts to return body as parsed JSON object, or raises an exception.
       const user = response.json();//user variable ekata response eken ena data tika json type eken dagannawa
       if(user){
         localStorage.setItem('token', user.tokenString);//key value widiyata thama save wenne
+        localStorage.setItem('user', JSON.stringify(user.user));
+        //API eken ewana anonymous obj eke tynne tokenstring , user
         this.decodedToken = this.jwtHelper.decodeToken(user.tokenString);
+        this.currentUser = user.user;
         console.log(this.decodedToken);
         this.userToken = user.tokenString;//component variable ekakatat dagannawa token eka
       }
