@@ -36,6 +36,9 @@ export class PhotoEditorComponent implements OnInit {
   }
  
   initializeUploader() : void {
+    //page eka initialize weddi FileUploader instance ekak hadagannawa
+    //ekee fields configure karanawa
+    //ita passe template ekee tynawa uploader.uploadAll() kiyala method ekak eka fire wenawaa Upload kiyana button click ekata
     this.uploader = new FileUploader({
       url: this.baseUrl + 'users/' + this.authService.decodedToken.nameid + '/photos',
       authToken: 'Bearer ' + localStorage.getItem('token'),
@@ -46,6 +49,7 @@ export class PhotoEditorComponent implements OnInit {
       maxFileSize: 10*1024*1024
     });
 
+    //upload wela ena response eka thama mekata enne,ethanin thama ape photo array ekata aluth photo eka update karanne
     this.uploader.onSuccessItem = (item, response, status, headers) =>{
       if(response){
         const res : Photo = JSON.parse(response);
