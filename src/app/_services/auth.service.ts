@@ -5,7 +5,7 @@ import { JwtHelper, tokenNotExpired } from 'angular2-jwt';
 import { map } from 'rxjs/operators';
 // import 'rxjs/add/operator/map';
 import 'rxjs/Rx';
-import { Observable } from 'rxjs/Rx';
+import { BehaviorSubject, Observable } from 'rxjs/Rx';
 import { User } from '../_models/User';
 
 @Injectable({
@@ -22,8 +22,19 @@ export class AuthService {
   //decodeToken method eken enne decoded token ekak typeeka "any"
   //eka dagannawa decodedToken kiyana variable ekata
   currentUser : User;
+  private photoUrl = new BehaviorSubject<string>('../../assets/user.jpg');// BehaviorSubject ekakata initial value ekak 
+  //tyenna ona
+  currentPhotoUrl = this.photoUrl.asObservable();
+  //Creates a new Observable with this Subject as the source. 
+  //You can do this to create customize Observer-side logic of the Subject and conceal it from code that uses the Observable.
 
   constructor(private http: Http) { }
+
+  changeMemberPhoto(photoUrl : string){
+    this.photoUrl.next(photoUrl);//me line eka post eke map eke dammath athi, eth me photoUrl eka user 
+    //kenek log out wela nathi welawaka unath ganna ona nisa thamai me method ekak hadala tynne, mokada meka wena 
+    //component wala call karanna pluwan neh, appComponent eke call karala tynne me method eka.
+  }
 
   login(model : any){
     // const headers = new Headers({'Content-type': 'application/json'});
@@ -42,6 +53,7 @@ export class AuthService {
         this.currentUser = user.user;
         console.log(this.decodedToken);
         this.userToken = user.tokenString;//component variable ekakatat dagannawa token eka
+        this.changeMemberPhoto(this.currentUser.photoUrl);
       }
     }).catch(error => this.handleError(error));//subscribe karala tyna thana error ekata yanne methanin catch karaganna error eka
     //.catch(this.handleError);//mehema witharak dannath pluwaan, hariyatama danne ne mokoda kiyalla
