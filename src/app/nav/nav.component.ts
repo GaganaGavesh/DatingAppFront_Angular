@@ -14,6 +14,7 @@ export class NavComponent implements OnInit {
   model : any = {};//this is empty object
   @ViewChild('loginForm') signupForm: NgForm
   userName: any;
+  photoUrl: string;
 
   constructor(
     public authService: AuthService, 
@@ -24,7 +25,7 @@ export class NavComponent implements OnInit {
   ngOnInit(){
     //meka wenne eka parai
     //console.log(this.model);
-
+    this.authService.currentPhotoUrl.subscribe(photoUrl => this.photoUrl = photoUrl);
   }
 
   login(){
