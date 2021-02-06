@@ -39,6 +39,7 @@ export class PhotoEditorComponent implements OnInit {
     //page eka initialize weddi FileUploader instance ekak hadagannawa
     //ekee fields configure karanawa
     //ita passe template ekee tynawa uploader.uploadAll() kiyala method ekak eka fire wenawaa Upload kiyana button click ekata
+    //meken thama [Route("api/users/{userId}/photos")] kiyana route ekata post request eka yawanne
     this.uploader = new FileUploader({
       url: this.baseUrl + 'users/' + this.authService.decodedToken.nameid + '/photos',
       authToken: 'Bearer ' + localStorage.getItem('token'),
@@ -53,6 +54,10 @@ export class PhotoEditorComponent implements OnInit {
     this.uploader.onSuccessItem = (item, response, status, headers) =>{
       if(response){
         const res : Photo = JSON.parse(response);
+        console.log(item);
+        console.log(response);
+        console.log(status);
+        console.log(headers);
         const photo = {
           id: res.id,
           url: res.url,
@@ -88,5 +93,17 @@ export class PhotoEditorComponent implements OnInit {
       this.alertify.error(error);
     }
     );
+  }
+
+  deletePhoto(photoId: number){
+    this.alertify.confirm("Are you sure you want to delete this photo ?", () => {
+      this.userService.deletePhoto(this.authService.decodedToken.nameid, photoId).subscribe(() => {
+        //uda tiken db eke photo eka ain wenawa, yata tiken SPA eke photo array eke delete karapu photo eka ain karanwa
+        this.photos.splice(_.findIndex(this.photos, { id : photoId}), 1);
+        this.alertify.success("Photo has been deleted");
+      }, erroe => {
+        this.alertify.error("Failed to delete the photo");
+      });
+    });
   }
 }
