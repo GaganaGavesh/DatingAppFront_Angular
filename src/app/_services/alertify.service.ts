@@ -10,6 +10,10 @@ export class AlertifyService {
 
   constructor() { }
 
+  //confrm kiyana metod eken ganne message kiyala string ekakui okCallback iyala function ekakyi
+  //meka anonymous function ekak unata aulak ne 
+  //alertify.confirm kiyana eke tynawa functioon ekak eka call unama ape callback function eka cal wenawa
+  //eka call unama thama callbackeka athule wena ewa tika wenne. e scene eka tynne photoedit component eke
   confirm(message: string, okCallback: ()=> any){
     alertify.confirm(message, function(e){
       if(e){
