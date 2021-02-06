@@ -45,6 +45,11 @@ export class UserService {
            //meka post method ekak unath api Body ekata monawath danne ne, url eke thama me dewal danne
            //body ekee empty object ekak thama yawanne
   }
+  
+  deletePhoto(userId: number, photoId: number){
+    return this.http.delete(this.baseUrl + 'users/' + userId + '/photos/' + photoId, this.jwt())
+           .catch(err => this.handleError(err));
+  }
 
   private jwt(){
     let token = localStorage.getItem('token');
