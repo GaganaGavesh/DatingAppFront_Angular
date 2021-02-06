@@ -1,4 +1,5 @@
-<form #registerForm="ngForm" (ngSubmit)="register()">
+<!-- Template Form -->
+<!-- <form #registerForm="ngForm" (ngSubmit)="register()">
 
     <h2 class="text-center text-primary">Sign Up</h2>
   
@@ -11,12 +12,39 @@
       <input type="password" class="form-control" placeholder="Password" name="password" required [(ngModel)]="model.Password">
     </div>
   
-    <!-- <div class="form-group">
+    <div class="form-group">
         <label for="favouriteValue">What is your favourite value ?</label>
         <select class="form-control" id="favouriteValue">
             <option *ngFor="let value of valuesFromHome" [value]="value">{{ value.name }}</option>
         </select>
-    </div> -->
+    </div>
+
+    <div class="form-group text-center">
+      <button class="btn btn-success" type="submit" >Register</button>
+      &nbsp;
+      <button class="btn btn-default" type="button" (click)="cancel()">Cancel</button>
+    </div>
+
+  </form> -->
+
+  <!-- Template Form -->
+  <form [formGroup]="registerFormReactive" (ngSubmit)="register()">
+
+    <h2 class="text-center text-primary">Sign Up</h2>
+  
+    <hr>
+    <div class="form-group">
+      <input type="text" class="form-control" placeholder="Username" formControlName="username">
+    </div>
+  
+    <div class="form-group">
+      <input type="password" class="form-control" placeholder="Password" formControlName="password">
+    </div>
+
+    <div class="form-group">
+      <input type="password" class="form-control" placeholder="Confirm Password" formControlName="confirmPassword">
+    </div>
+
 
     <div class="form-group text-center">
       <button class="btn btn-success" type="submit" >Register</button>
@@ -25,4 +53,8 @@
     </div>
 
   </form>
+
+  <p>From Value : {{ registerFormReactive.value | json}}</p>
+  <p>From Status : {{ registerFormReactive.status | json}}</p>
+
 
