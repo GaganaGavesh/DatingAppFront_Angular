@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpModule } from '@angular/http';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
@@ -49,6 +49,7 @@ import { PhotoEditorComponent } from './members/photo-editor/photo-editor.compon
     BrowserModule,
     HttpModule,
     FormsModule,
+    ReactiveFormsModule,
     RouterModule.forRoot(appRoutes),
     BsDropdownModule.forRoot(),
     TabsModule.forRoot(),
