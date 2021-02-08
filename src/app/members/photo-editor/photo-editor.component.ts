@@ -66,6 +66,13 @@ export class PhotoEditorComponent implements OnInit {
           isMain: res.isMain
         }
         this.photos.push(photo);
+        //photo ekak aluthma user kenekta upload kalama main photo ekata set wenawa API eken eth,
+        // ape token eka update karanna ona browser eke e change eka wada karanna nam
+        if(photo.isMain){
+          this.authService.changeMemberPhoto(photo.url);
+          this.authService.currentUser.photoUrl = photo.url;
+          localStorage.setItem('user', JSON.stringify(this.authService.currentUser));
+        }
       }
     };
   }

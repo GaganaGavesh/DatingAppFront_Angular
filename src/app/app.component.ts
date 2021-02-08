@@ -28,7 +28,12 @@ export class AppComponent implements OnInit{
     }
     if(user){
       this.authService.currentUser = user;
-      this.authService.changeMemberPhoto(user.photoUrl);
+      //refresh kalama user default photo eka nathi wena ekata solution ekak
+      if(this.authService.currentUser.photoUrl != null){
+        this.authService.changeMemberPhoto(user.photoUrl);
+      } else {
+        this.authService.changeMemberPhoto('../assets/user.jpg');
+      }
     }
   }
 }

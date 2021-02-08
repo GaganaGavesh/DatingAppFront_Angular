@@ -5,6 +5,8 @@ import { AlertifyService } from '../_services/alertify.service';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { User } from '../_models/User';
 import { object } from 'underscore';
+import { UserService } from '../_services/user.service';
+import { Router } from '@angular/router';
 //import { EventEmitter } from 'events';
 
 @Component({
@@ -17,6 +19,7 @@ export class RegisterComponent implements OnInit {
   @Input() valuesFromHome : any;
   @Output() cancelRegister = new EventEmitter();
 
+  //model : any = {};//me empty object ekak initialize karana hati
   user : User;
   @ViewChild('registerForm') registerForm: NgForm; //to get the form details
   registerFormReactive : FormGroup;
@@ -26,7 +29,8 @@ export class RegisterComponent implements OnInit {
   constructor(
     private authService : AuthService, 
     private alertify: AlertifyService,
-    private fb : FormBuilder) { }
+    private fb : FormBuilder,
+    private router: Router) { }
 
   //Angular wala reactive forms hadanna widi 2k tynawa 
   //1) FormGroup ekak hadanla ekata FormControl dana eka
@@ -76,8 +80,22 @@ export class RegisterComponent implements OnInit {
     // });
     // this.registerForm.reset();
     // //console.log(this.model); gaveshgamage@gmail.com
-    this.user = object.assign()
+    if(this.registerFormReactive.valid){
+      this.user = Object.assign({}, this.registerFormReactive.value);
+    }
     console.log(this.registerFormReactive.value);
+    this.authService.register(this.user).subscribe(
+        ()=>{//callback function eka call wenawa observable eka athuledi
+          console.log("Registration Successful");
+          this.alertify.success("Registration Successful");
+        }, error =>{
+          this.alertify.error(error);
+        }, () => {
+          this.authService.login(this.user).subscribe(() => {
+            this.router.navigate(['/members']);
+          });
+        }
+    );
   }
 
   cancel(){
