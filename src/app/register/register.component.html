@@ -34,17 +34,85 @@
   
     <hr>
     <div class="form-group">
+      <label class="control-label" style="margin-right:10px">I am a: </label>
+      <label class="radio-inline">
+              <input type="radio" value="male" formControlName="gender">Male
+            </label>
+      <label class="radio-inline">
+                <input type="radio" value="female" formControlName="gender">Female
+              </label>
+    </div>
+
+    <div class="form-group" [ngClass]="{'has-error': registerFormReactive.get('username').errors 
+            && registerFormReactive.get('username').touched}">
       <input type="text" class="form-control" placeholder="Username" formControlName="username">
+      <span class="help-text" *ngIf="registerFormReactive.get('username').hasError('required') 
+            && registerFormReactive.get('username').touched">
+        Username is required
+      </span>
+      <!-- apita specific validation rule ekak target karanna ona nam hasError('nameOfValidationRule') 
+      danna ona, me field eke nam me widiyata dammata aulak ne mokada meke tynne required validator rka witharak nisa-->
     </div>
-  
-    <div class="form-group">
+
+    <div class="form-group" [ngClass]="{'has-error': registerFormReactive.get('knownAs').touched 
+            && registerFormReactive.get('knownAs').hasError('required')}">
+      <input class="form-control" placeholder="Known as" formControlName="knownAs">
+      <span class="help-block" *ngIf="registerFormReactive.get('knownAs').touched 
+            && registerFormReactive.get('knownAs').hasError('required')">Known as is required</span>
+    </div>
+
+    <div class="form-group" [ngClass]="{'has-error': registerFormReactive.get('dateOfBirth').touched 
+            && registerFormReactive.get('dateOfBirth').hasError('required')}">
+      <input class="form-control" type="date" placeholder="Date of Birth" formControlName="dateOfBirth">
+      <span class="help-block" *ngIf="registerFormReactive.get('dateOfBirth').touched 
+            && registerFormReactive.get('dateOfBirth').hasError('required')">Date of birth is required</span>
+    </div>
+
+    <div class="form-group" [ngClass]="{'has-error': registerFormReactive.get('city').touched 
+            && registerFormReactive.get('city').hasError('required')}">
+      <input class="form-control" placeholder="City" formControlName="city">
+      <span class="help-block" *ngIf="registerFormReactive.get('city').touched 
+            && registerFormReactive.get('city').hasError('required')">City is required</span>
+    </div>
+
+    <div class="form-group" [ngClass]="{'has-error': registerFormReactive.get('country').touched 
+            && registerFormReactive.get('country').hasError('required')}">
+      <input class="form-control" placeholder="Country" formControlName="country">
+      <span class="help-block" *ngIf="registerFormReactive.get('country').touched 
+            && registerFormReactive.get('country').hasError('required')">Country is required</span>
+    </div>
+
+    <div class="form-group" [ngClass]="{'has-error': registerFormReactive.get('password').errors 
+            && registerFormReactive.get('password').touched}">
       <input type="password" class="form-control" placeholder="Password" formControlName="password">
+      <span class="help-text" *ngIf="registerFormReactive.get('password').hasError('required') 
+            && registerFormReactive.get('password').touched">
+        Password is required
+      </span>
+      <span class="help-text" *ngIf="registerFormReactive.get('password').hasError('minlength') 
+            && registerFormReactive.get('password').touched">
+        Password must be atleast 4 characters
+      </span>
+      <span class="help-text" *ngIf="registerFormReactive.get('password').hasError('maxlength') 
+            && registerFormReactive.get('password').touched">
+        Password cannot exceed 8 characters
+      </span>
+      <!--  if we want to target validation rule in the htmltemplate we should use in in totally simple letters 
+      although we use camel case in our component file we have to use it in only simple letters in the HTML template-->
     </div>
 
-    <div class="form-group">
+    <div class="form-group" [ngClass]="{'has-error': (registerFormReactive.get('confirmPassword').errors && registerFormReactive.get('confirmPassword').touched) || 
+    (registerFormReactive.get('confirmPassword').touched && registerFormReactive.hasError('mismatch'))}">
       <input type="password" class="form-control" placeholder="Confirm Password" formControlName="confirmPassword">
+      <span class="help-text" *ngIf="registerFormReactive.get('password').hasError('required') 
+            && registerFormReactive.get('password').touched">
+        Confirm Password is required
+      </span>
+      <span class="help-text" *ngIf="registerFormReactive.get('confirmPassword').touched 
+            && registerFormReactive.hasError('mismatch')">
+        Confirm Password must match with the password
+      </span>
     </div>
-
 
     <div class="form-group text-center">
       <button class="btn btn-success" type="submit" >Register</button>
@@ -54,6 +122,7 @@
 
   </form>
 
+  <!-- For display the form state and the values -->
   <p>From Value : {{ registerFormReactive.value | json}}</p>
   <p>From Status : {{ registerFormReactive.status | json}}</p>
 
