@@ -53,7 +53,12 @@ export class AuthService {
         this.currentUser = user.user;
         console.log(this.decodedToken);
         this.userToken = user.tokenString;//component variable ekakatat dagannawa token eka
-        this.changeMemberPhoto(this.currentUser.photoUrl);
+        //photo ekak nathi user kenekta default photo eka display karanna ona
+        if(this.currentUser.photoUrl != null){
+          this.changeMemberPhoto(this.currentUser.photoUrl);
+        } else {
+          this.changeMemberPhoto('../../assets/user.jpg');
+        }
       }
     }).catch(error => this.handleError(error));//subscribe karala tyna thana error ekata yanne methanin catch karaganna error eka
     //.catch(this.handleError);//mehema witharak dannath pluwaan, hariyatama danne ne mokoda kiyalla
@@ -61,8 +66,8 @@ export class AuthService {
     //karala ewanawa
   }
 
-  register(model : any){
-    return this.http.post(this.baseUrl + 'register', model, this.requestOptions()).catch(error => this.handleError(error));
+  register(user : User){
+    return this.http.post(this.baseUrl + 'register', user, this.requestOptions()).catch(error => this.handleError(error));
     //Catches errors on the observable to be handled by returning a new observable or throwing an error.
   }
 
