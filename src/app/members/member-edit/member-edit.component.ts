@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { User } from 'src/app/_models/User';
 import { AlertifyService } from 'src/app/_services/alertify.service';
 import { AuthService } from 'src/app/_services/auth.service';
+import { DateService } from 'src/app/_services/date.service';
 import { UserService } from 'src/app/_services/user.service';
 
 @Component({
@@ -16,19 +17,23 @@ export class MemberEditComponent implements OnInit {
   user : User;
   @ViewChild('editForm') editform : NgForm; 
   photoUrl: string;
+  timeAgo : string;
 
   constructor(
     private route : ActivatedRoute, 
     private alertify : AlertifyService,
     private userService : UserService,
-    private authService : AuthService) { }
+    private authService : AuthService,
+    private getTimeAgo : DateService) { }
 
   ngOnInit(): void {
     //me route eka activate wenna yanawa nama onInit ekedi me route eke ena data eka thama ganne
     this.route.data.subscribe(data =>{
       this.user = data['user'];
     })
-    this.authService.currentPhotoUrl.subscribe(photoUrl => this.photoUrl = photoUrl)
+    this.authService.currentPhotoUrl.subscribe(photoUrl => this.photoUrl = photoUrl);
+    this.timeAgo = this.getTimeAgo.getTimeAgo(this.user.lastActive);
+    console.log(this.timeAgo);
   }
 
   updateUser() {

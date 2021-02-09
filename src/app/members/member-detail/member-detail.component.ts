@@ -7,6 +7,7 @@ import { UserService } from 'src/app/_services/user.service';
 import {NgxGalleryOptions} from '@kolkov/ngx-gallery';
 import {NgxGalleryImage} from '@kolkov/ngx-gallery';
 import {NgxGalleryAnimation} from '@kolkov/ngx-gallery';
+import { DateService } from 'src/app/_services/date.service';
 
 @Component({
   selector: 'app-member-detail',
@@ -21,11 +22,13 @@ export class MemberDetailComponent implements OnInit {
   //ngx gallery module
   galleryOptions: NgxGalleryOptions[];
   galleryImages: NgxGalleryImage[];
+  timeAgo : string;
 
   constructor(
     private userService : UserService, 
     private alertify : AlertifyService, 
-    private route : ActivatedRoute) { }
+    private route : ActivatedRoute,
+    private getTimeAgo : DateService) { }
 
   ngOnInit(): void {
     //sthis.loadUser();
@@ -34,6 +37,7 @@ export class MemberDetailComponent implements OnInit {
     this.route.data.subscribe(data => {
       this.user = data['user'];//route eke data wala user kiyana name eka yatathe thama ape resolver eken ena data tika 
       //thiyenne
+      this.timeAgo = this.getTimeAgo.getTimeAgo(this.user.lastActive);
     });
 
     //mekata ganne NgxGalleryOptions kiyana class eke object
