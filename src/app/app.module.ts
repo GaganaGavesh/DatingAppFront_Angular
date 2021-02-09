@@ -47,6 +47,7 @@ import { PhotoEditorComponent } from './members/photo-editor/photo-editor.compon
     PhotoEditorComponent
   ],
   imports: [
+    FileUploadModule,
     BrowserModule,
     HttpModule,
     FormsModule,
@@ -55,7 +56,6 @@ import { PhotoEditorComponent } from './members/photo-editor/photo-editor.compon
     BsDropdownModule.forRoot(),
     TabsModule.forRoot(),
     NgxGalleryModule,
-    FileUploadModule,
     BsDatepickerModule.forRoot(),
   ],
   providers: [
