@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { JwtHelper } from 'angular2-jwt';
 import { User } from './_models/User';
 import { AuthService } from './_services/auth.service';
@@ -12,7 +13,7 @@ export class AppComponent implements OnInit{
   title = 'DatingAppSPA';
   jwtHelper: JwtHelper = new JwtHelper();
 
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService, private router: Router) { }
 
   ngOnInit(){
     //meka damme token eka tyna welawatta userge name eka ganne nathi eka hadanna
@@ -34,6 +35,7 @@ export class AppComponent implements OnInit{
       } else {
         this.authService.changeMemberPhoto('../assets/user.jpg');
       }
+      this.router.navigate(['/members']);
     }
   }
 }
