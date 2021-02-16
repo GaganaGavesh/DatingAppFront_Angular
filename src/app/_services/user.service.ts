@@ -20,7 +20,7 @@ export class UserService {
   baseUrl = environment.apiUrl;
   constructor(private http : Http) { }
 
-  getUsers(page?: number, itemsForPage?: number) : Observable<PaginatedResult<User[]>>{
+  getUsers(page?: number, itemsForPage?: number, userParams?: any) : Observable<PaginatedResult<User[]>>{
     //getUsers() kiyana method eka observable ekak return karanawa eka User[](user object array ekak) ekak
     
     //BEFORE PAGINATION
@@ -36,9 +36,16 @@ export class UserService {
     let queryString: string = '?';//let kiyala danne string append wenakota aluth string hadenawaneh,
     // e nisa pointer eka wenas wenawa, strings immutable nisa thama me scene eka wennee
     if(page != null && itemsForPage != null){
-      queryString +=  'pageNumber=' + page + '&pageSize=' + itemsForPage;
+      queryString +=  'pageNumber=' + page + '&pageSize=' + itemsForPage + '&';
     }//query string ekak tyenam ekath URL ekata append karanawa
 
+    if(userParams != null){
+      queryString += 
+        'minAge=' + userParams.minAge + 
+        '&maxAge=' + userParams.maxAge + 
+        '&gender=' + userParams.gender +
+        '&orderBy=' + userParams.orderBy;
+    }
     //dan meke response eke enawa body ekai headers nui dekak. api normal response eka acces kalama bodu eke eka enawa
     //response.headers.get('Pagination') kiyala dammama headers enawa, e deka bedala 
     //paginatedResult object eke property dekata dagannawa
