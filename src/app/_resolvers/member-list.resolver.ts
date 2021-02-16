@@ -11,16 +11,22 @@ import 'rxjs/add/operator/catch'
 @Injectable()
 export class MemberListResolver implements Resolve<User[]>{
     
+    pageSise: number = 5;
+    pageNumber: number = 1;
+
     constructor(
         private userService : UserService, 
         private router : Router, 
         private alertify : AlertifyService){}
 
+    //resolve kiyanne Resolve kiyana interface ke tyna method ekak
     resolve(route : ActivatedRouteSnapshot) : Observable<User[]> {
-        return this.userService.getUsers().catch(error => {
+        return this.userService.getUsers(this.pageNumber, this.pageSise).catch(error => {
             this.alertify.error('Problem n retrieving data');
             this.router.navigate(['/home']);
             return Observable.of(null);
+            //methenta return wenne Observable<PaginatedResult<Users[]>> ekak, 
+            //resolver eka use karna thana thama  subscribe karanna ona
             //catch kalath observable ekakma pita wena widiyata tyenna ona aniwaryen
             //mokada return wenna ona observable ekak neh
         })
