@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http, RequestOptions, Headers } from '@angular/http';
+import { Http, RequestOptions, Headers, Response } from '@angular/http';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { User } from '../_models/User';
@@ -9,6 +9,7 @@ import 'rxjs/add/operator/map'
 import 'rxjs/add/operator/catch'
 import 'rxjs/add/observable/throw'
 import { ThrowStmt } from '@angular/compiler';
+import { PaginatedResult } from '../_models/Pagination';
 
 
 @Injectable({
@@ -19,11 +20,37 @@ export class UserService {
   baseUrl = environment.apiUrl;
   constructor(private http : Http) { }
 
-  getUsers() : Observable<User[]>{
+  getUsers(page?: number, itemsForPage?: number) : Observable<PaginatedResult<User[]>>{
     //getUsers() kiyana method eka observable ekak return karanawa eka User[](user object array ekak) ekak
+    
+    //BEFORE PAGINATION
+    // return this.http.get(this.baseUrl + 'users', this.jwt())
+    //        .map(response => <User[]>response.json())//body eka JSON object ekak karanawa, e map una response eka 
+    //        //<User[]> type eke observable ekak karanne <User[]> dapu eken.
+    //        .catch(error => this.handleError(error));
 
-    return this.http.get(this.baseUrl + 'users', this.jwt())
-           .map(response => <User[]>response.json())
+    //AFTER PAGINATION
+    const paginatedResult: PaginatedResult<User[]>  = new PaginatedResult<User[]>();
+
+    //This our query string
+    let queryString: string = '?';//let kiyala danne string append wenakota aluth string hadenawaneh,
+    // e nisa pointer eka wenas wenawa, strings immutable nisa thama me scene eka wennee
+    if(page != null && itemsForPage != null){
+      queryString +=  'pageNumber=' + page + '&pageSize=' + itemsForPage;
+    }//query string ekak tyenam ekath URL ekata append karanawa
+
+    //dan meke response eke enawa body ekai headers nui dekak. api normal response eka acces kalama bodu eke eka enawa
+    //response.headers.get('Pagination') kiyala dammama headers enawa, e deka bedala 
+    //paginatedResult object eke property dekata dagannawa
+    return this.http.get(this.baseUrl + 'users' + queryString, this.jwt())
+            .map((response : Response) => { 
+              paginatedResult.result = response.json();
+
+              if(response.headers.get('Pagination') != null){
+                paginatedResult.pagination = JSON.parse(response.headers.get('Pagination'));
+              }
+              return paginatedResult;
+            })
            .catch(error => this.handleError(error));
   }
   //Aape api eken token ekak request karanawa neh users la set eka dena controller eka acces karanakota
