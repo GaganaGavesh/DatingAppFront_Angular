@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Pagination } from 'src/app/_models/Pagination';
 import { User } from '../../_models/User';
 import { AlertifyService } from '../../_services/alertify.service';
 import { UserService } from '../../_services/user.service';
@@ -11,7 +12,8 @@ import { UserService } from '../../_services/user.service';
 })
 export class MemberListComponent implements OnInit {
 
-  users : User[];
+  users : User[];//meka update wena hama parakama automatically HTML template eka update wenawa
+  pagination: Pagination;
 
   constructor(private userService: UserService, private alertify: AlertifyService, private route : ActivatedRoute) { }
 
@@ -19,8 +21,28 @@ export class MemberListComponent implements OnInit {
     //this.loadUsers();
 
   this.route.data.subscribe(data => {
-    this.users = data['users'];
+    this.users = data['users'].result;
+    this.pagination = data['users'].pagination;
   });
+  }
+
+  //this method loads next batch of users
+  loadUsers(){
+    this.userService.getUsers(this.pagination.currentPage, this.pagination.itemsPerPage).subscribe(
+      response => {
+        this.users = response.result;
+        this.pagination = response.pagination;
+      }, error => {
+        this.alertify.error(error);
+      }
+    )
+  }
+
+  pageChanged(event: any): void {
+    // console.log('Page changed to: ' + event.page);
+    // console.log('Number items per page: ' + event.itemsPerPage);
+    this.pagination.currentPage = event.page;
+    this.loadUsers();
   }
 
   // loadUsers(){

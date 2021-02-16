@@ -5,3 +5,18 @@
         </div>
     </div>
 </div> 
+<div class="text-center">
+    <!-- [] athule dala tyna ewa input properties wage thama wada karanne mata hithena widiyata
+         pagination kiyana ekata input wenawa 
+        Meke pageChange wenne pagination kiyana eke e event eka thama mekata genalla tynne
+    eken emit wen aeka thama methenta genalla tynne-->
+    <pagination 
+            (pageChanged)="pageChanged($event)"
+            [boundaryLinks]="true" 
+            [totalItems]="pagination.totalItems" 
+            [(ngModel)]="pagination.currentPage"
+            [itemsPerPage]="pagination.itemsPerPage"
+            previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;">
+ 
+    </pagination>
+</div>s
