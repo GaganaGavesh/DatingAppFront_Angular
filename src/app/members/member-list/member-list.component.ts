@@ -14,6 +14,9 @@ export class MemberListComponent implements OnInit {
 
   users : User[];//meka update wena hama parakama automatically HTML template eka update wenawa
   pagination: Pagination;
+  user: User = JSON.parse(localStorage.getItem('user'));
+  genderList = [{value : 'male', display : 'Males'}, {value : 'female', display : 'Females'}];
+  userParams: any = {};
 
   constructor(private userService: UserService, private alertify: AlertifyService, private route : ActivatedRoute) { }
 
@@ -24,11 +27,16 @@ export class MemberListComponent implements OnInit {
     this.users = data['users'].result;
     this.pagination = data['users'].pagination;
   });
+
+  this.userParams.gender = this.user.gender === 'female' ? 'male' : 'female';
+  this.userParams.minAge = 18;
+  this.userParams.maxAge = 99;
+  this.userParams.orderBy = 'lastActive';
   }
 
   //this method loads next batch of users
   loadUsers(){
-    this.userService.getUsers(this.pagination.currentPage, this.pagination.itemsPerPage).subscribe(
+    this.userService.getUsers(this.pagination.currentPage, this.pagination.itemsPerPage, this.userParams).subscribe(
       response => {
         this.users = response.result;
         this.pagination = response.pagination;
@@ -36,6 +44,14 @@ export class MemberListComponent implements OnInit {
         this.alertify.error(error);
       }
     )
+  }
+
+  resetFilters(){
+    this.userParams.gender = this.user.gender === 'female' ? 'male' : 'female';
+    this.userParams.minAge = 18;
+    this.userParams.maxAge = 99;
+
+    this.loadUsers();
   }
 
   pageChanged(event: any): void {
