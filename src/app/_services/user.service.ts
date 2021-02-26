@@ -20,7 +20,7 @@ export class UserService {
   baseUrl = environment.apiUrl;
   constructor(private http : Http) { }
 
-  getUsers(page?: number, itemsForPage?: number, userParams?: any) : Observable<PaginatedResult<User[]>>{
+  getUsers(page?: number, itemsForPage?: number, userParams?: any, likesParam? : string) : Observable<PaginatedResult<User[]>>{
     //getUsers() kiyana method eka observable ekak return karanawa eka User[](user object array ekak) ekak
     
     //BEFORE PAGINATION
@@ -38,6 +38,14 @@ export class UserService {
     if(page != null && itemsForPage != null){
       queryString +=  'pageNumber=' + page + '&pageSize=' + itemsForPage + '&';
     }//query string ekak tyenam ekath URL ekata append karanawa
+
+    if(likesParam === 'Likers'){
+      queryString += 'Likers=true&'
+    }
+
+    if(likesParam === 'Likees'){
+      queryString += 'Likees=true&'
+    }
 
     if(userParams != null){
       queryString += 
@@ -85,6 +93,13 @@ export class UserService {
            .catch(err => this.handleError(err));
   }
 
+  sendLike(id: number, recipientId: number){
+    //Post request danakota body eke monawath nathnam empty object ekak yawannama ona nathnam wada karanne ne,
+    //request content ekak nathnam aniwa {} danna ona
+    return this.http.post(this.baseUrl + 'users/' + id + '/like/' + recipientId, {}, this.jwt())
+           .catch(err => this.handleError(err));
+  }
+
   private jwt(){
     let token = localStorage.getItem('token');
 
@@ -99,6 +114,23 @@ export class UserService {
   } 
 
   private handleError(error: any){
+    if(error.status == 400){
+      return Observable.throw(error._body);
+      //error kiyalath enne response ekak ma thama eke status, _body etc tynawa me wage
+      //_body eke tyna message eka thama print karanna ona
+      // headers: Headers
+      // _headers: Map(1) {"content-type" => Array(1)}
+      // _normalizedNames: Map(1) {"content-type" => "content-type"}
+      // __proto__: Object
+      // ok: false
+      // status: 400
+      // statusText: "Bad Request"
+      // type: 2
+      // url: "http://localhost:50100/api/users/2/like/12"
+      // _body: "You have already liked the user"
+      // __proto__: Body
+    }
+    console.log(error);
     
     const applicationError = error.headers.get("Application-Error");//meken ganne exception wage ewa
     if(applicationError){
