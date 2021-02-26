@@ -11,6 +11,7 @@ import { PreventUnsavedChangesGuard } from "./_guards/prevent-unsaved-changes.gu
 import { MemberDetailResolver } from "./_resolvers/member-detail.resolver";
 import { MemberEditResolver } from "./_resolvers/member-edit.resolver";
 import { MemberListResolver } from "./_resolvers/member-list.resolver";
+import { ListsResolver } from "./_resolvers/list.resolver";
 
 //appRoutes kiyanne router object tyna array ekak meke Routes kiyana thanata 
 //Routes[] kiyala dammath aulak ne
@@ -28,7 +29,8 @@ export const appRoutes : Routes =[
           resolve : {user : MemberEditResolver},
           canDeactivate : [PreventUnsavedChangesGuard]},
         { path : 'messages', component : MessagesComponent },
-        { path : 'lists', component : ListComponent }
+        { path : 'lists', component : ListComponent, resolve : {users : ListsResolver} }
+        //reslover ekak run wenakota Resolver class eke tyna resolve kiyana method eka automatically run wenawa mm hithanne
       ]
     },
     { path : '**', redirectTo : 'home', pathMatch : 'full'},
