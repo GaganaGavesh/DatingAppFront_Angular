@@ -17,6 +17,7 @@ import { AuthGuard } from './_guards/auth.guard';
 import { MemberDetailResolver } from './_resolvers/member-detail.resolver';
 import { MemberListResolver } from './_resolvers/member-list.resolver';
 import { MemberEditResolver } from './_resolvers/member-edit.resolver';
+import { ListsResolver } from './_resolvers/list.resolver';
 
 import { appRoutes } from './routes';
 
@@ -66,7 +67,9 @@ import { PhotoEditorComponent } from './members/photo-editor/photo-editor.compon
     AuthGuard, 
     MemberDetailResolver, 
     MemberListResolver,
-    MemberEditResolver],//providedIn: 'root' dapuwa tyna nisa methana wadiya ne
+    MemberEditResolver,
+    ListsResolver
+  ],//providedIn: 'root' dapuwa tyna nisa methana wadiya ne
   bootstrap: [AppComponent]
 })
 export class AppModule { }
